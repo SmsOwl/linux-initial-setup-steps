@@ -1,0 +1,18 @@
+Main goals:
+1. Machine learning workstation that is well configured
+2. Easy backup/restore
+3. Cuda and jupyter installed and using local hardware
+
+
+1. Main hardware:
+  - Z390 AORUS ELITE
+  - i5-9600KF CPU @ 3.70GHz
+  - GA106 GeForce RTX 3060 Lite Hash Rate
+  - 16GB DIMM DDR4 Synchronous 2400 MHz
+  - SSD 1TB
+  OS:
+  - debian 12 x86_64 6.1.0-25-amd64
+    https://www.debian.org/distrib/
+
+  More info 'sudo lshw' and 'uname -a'
+
