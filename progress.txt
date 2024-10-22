@@ -1,18 +1,73 @@
 Main goals:
 1. Machine learning workstation that is well configured
-2. Installation steps and easy backup/restore
+2. Installation steps, helpful info and easy backup/restore
 3. Cuda and jupyter installed and using local hardware
 
 
-1. Main hardware:
+Hardware:
   - Z390 AORUS ELITE
   - i5-9600KF CPU @ 3.70GHz
   - GA106 GeForce RTX 3060 Lite Hash Rate
   - 16GB DIMM DDR4 Synchronous 2400 MHz
   - SSD 1TB
-  OS:
+
+OS:
   - debian 12 x86_64 6.1.0-25-amd64
     https://www.debian.org/distrib/
-
   More info 'sudo lshw' and 'uname -a'
 
+Debian installation:
+  Official doc: https://www.debian.org/releases/bookworm/amd64/index
+
+  Installing:
+  - download debian iso from a reliable mirror, live version is nice, any mistakes can be corrected without complete OS reinstall
+  - insert usb and check its name with 'df' command line
+  - create installation media (usb drive will be wiped)
+      'sudo dd bs=4M if=/media/username/Downloads/isos/debian-version.iso of=/dev/sdg status=progress &&sync'
+      arguments: if= is path to downloaded iso file, of= is path to usb drive identified by 'df'
+  - check BIOS/UEFI settings to allow usb boot
+  - boot from usb, partition and install
+
+  Useful info:
+    
+    admin password reset:
+    Edit GRUB line before OS is booted. 'e' advanced options or something like that.
+    At the end of the line that is loading linux kernel ending with 'ro  quiet' add 'rw init=/bin/bash'. It will drop you into bash console with read and write permissions to init file after system boot.
+    Boot OS, edit admin password with 'passwd' command. 'passwd username' command changes password of another user.
+    Reboot with 'exec /sbin/init'
+
+    problem with multiboot sectors:
+
+    Boot partition can be wiped, damaged or something. To restore windows10 boot info:
+    Burn Windows to USB
+    Plug the USB into your computer
+    Start the computer and press Esc (or whatever key you use to access the boot menu)
+    Select the USB in the boot menu
+    Choose language and press next
+    Select Repair your computer
+    Select Advanced
+    Select Command prompt
+    Enter the following commands:
+    bootrec /fixmb
+    bootrec /fixboot
+    Note: it's ok if the above step returned access denied or something like that
+    bootrec /rebuildbcd
+    bcdboot c:\windows /s c:
+    Then reboot and repeat the steps from number 3 to 7
+    Now instead of opening the command prompt choose Fix startup problems
+    After that you are done.
+    
+    debian boot problems:
+    boot to some linux usb
+    sudo apt install -y wget;
+    wget -O- https://sourceforge.net/projects/boot-repair/files/key.gpg | sudo tee /etc/apt/keyrings/boot-repair.gpg;
+    echo 'deb [signed-by=/etc/apt/keyrings/boot-repair.gpg] https://ppa.launchpadcontent.net/yannubuntu/boot-repair/ubuntu noble main' | sudo tee /etc/apt/sources.list.d/boot-repair.list;
+    sudo apt update && sudo apt install -y boot-repair
+    run boot-repair program and try to auto repair boot sectors
+
+
+
+
+
+
+Steps after install
