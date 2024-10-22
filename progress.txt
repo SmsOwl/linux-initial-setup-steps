@@ -1,6 +1,6 @@
 Main goals:
 1. Machine learning workstation that is well configured
-2. Easy backup/restore
+2. Installation steps and easy backup/restore
 3. Cuda and jupyter installed and using local hardware
 
 
