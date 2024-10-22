@@ -1,0 +1,4 @@
+Main goals:
+- machine learning workstation that is well configured
+- easy backup/restore
+- cuda and jupyter installed and working
