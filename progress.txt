@@ -20,7 +20,7 @@ Debian installation:
   Official doc: https://www.debian.org/releases/bookworm/amd64/index
 
   Installing:
-  - download debian iso from a reliable mirror, live version is nice, any mistakes can be corrected without complete OS reinstall
+  - download debian iso from a reliable mirror, live version is nice, mistakes can be corrected without complete OS reinstall
   - insert usb and check its name with 'df' command line
   - create installation media (usb drive will be wiped)
       'sudo dd bs=4M if=/media/username/Downloads/isos/debian-version.iso of=/dev/sdg status=progress &&sync'
@@ -66,8 +66,42 @@ Debian installation:
     run boot-repair program and try to auto repair boot sectors
 
 
+Backup with rsync:
+    Rsync can be done when system is running, but writing something while rsync is running may corrupt the backup file.
+    Best to do it using live boot media and rsyncing partitionA to partitionB.
 
+    Some directories should be excluded when rsyncing. Keep directory itself, just don't backup files inside.
+    /boot - no need with simple setups, it's better to boot-repair after backup recovery
+    /proc - historical directory, contains info about running processes, it's recreated every time system starts, no need to backup
+    /sys - same as proc, but created more recently
+    /dev - contains files representing devices attached to the system, usually dynamically created, backup may be a good idea if it's static and backup is recovered to the same machine (unusual)
+    /tmp - temporary files, no needto backup
+    /mnt - mounted devices, no need to backup some usb while doing system backup, hand-mounting mounts here
+    /media - mounted devices, new way, system mounts here
+    /run - "temporary filesystem containing volatile runtime data"
+    /lost+found - files deleted or lost in disk operation (fsck for example)    
 
 
 
 Steps after install
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
