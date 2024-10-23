@@ -75,13 +75,35 @@ Backup with rsync:
     /proc - historical directory, contains info about running processes, it's recreated every time system starts, no need to backup
     /sys - same as proc, but created more recently
     /dev - contains files representing devices attached to the system, usually dynamically created, backup may be a good idea if it's static and backup is recovered to the same machine (unusual)
-    /tmp - temporary files, no needto backup
-    /mnt - mounted devices, no need to backup some usb while doing system backup, hand-mounting mounts here
+    /mnt - mounted devices, no need to backup some usb while doing system backup, hand-mounting mounts here, should be used by sysadmin
     /media - mounted devices, new way, system mounts here
     /run - "temporary filesystem containing volatile runtime data"
-    /lost+found - files deleted or lost in disk operation (fsck for example)    
+    /lost+found - files deleted or lost in disk operation (fsck for example)
+    /tmp - temporary files, no need to backup
+    /var/cache - caches can be regenerated, no point in backing them up
+    /var/tmp
+    optionally excluded:
+    /var/log
 
+    
+    sudo rsync -aAXv --stats --progress / --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/disk2
 
+    sudo rsync -axHAXh --info=progress2 /media/$USER/Bookworm/ --exclude={"/boot/*","/proc/*","/sys/*","/dev/*","/mnt/*","/media/*","/run/*","/lost+found","/tmp/*","/var/cache/*","/var/tmp/*"} /media/$USER/System-Backups/Debian/Snapshot-YY.MM.DD -n;
+      
+      slash after source is important, keep it
+      after dry-run, remove -n at the end of command to do real backup
+      to restore backup, identify disks and just do rsync with reversed source/destination and remove --exclude argument
+
+    -a - archive mode - (-rlptgoD) recursive, symbolic links, permissions, modif times, group, owner, device files - those are preserved in transfer
+    -x - don't cross filesystem boundraries
+    -H - preserve hard links
+    -A - preserve ACLs
+    -X - preserve extended attributes
+    -h - human-readable
+    -v - verbose
+    --delete - delete extraneous files from destination dir
+    --info=progress2 - information about transfer progress, speed, files sent and still left
+    -n - dry-run
 
 Steps after install
 
