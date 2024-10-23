@@ -88,7 +88,7 @@ Backup with rsync:
     
     sudo rsync -aAXv --stats --progress / --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/disk2
 
-    sudo rsync -axHAXh --info=progress2 /media/$USER/Bookworm/ --exclude={"/boot/*","/proc/*","/sys/*","/dev/*","/mnt/*","/media/*","/run/*","/lost+found","/tmp/*","/var/cache/*","/var/tmp/*"} /media/$USER/System-Backups/Debian/Snapshot-YY.MM.DD -n;
+    sudo rsync -axHAXh --info=progress2 --log-file=/var/log/rsync.log /media/$USER/Bookworm/ --exclude={"/boot/*","/proc/*","/sys/*","/dev/*","/mnt/*","/media/*","/run/*","/lost+found","/tmp/*","/var/cache/*","/var/tmp/*"} /media/$USER/System-Backups/Debian/Snapshot-YY.MM.DD -n;
       
       slash after source is important, keep it
       after dry-run, remove -n at the end of command to do real backup
@@ -103,6 +103,7 @@ Backup with rsync:
     -v - verbose
     --delete - delete extraneous files from destination dir
     --info=progress2 - information about transfer progress, speed, files sent and still left
+    --log-file - logs difference between next snapshots
     -n - dry-run
 
 Steps after install
