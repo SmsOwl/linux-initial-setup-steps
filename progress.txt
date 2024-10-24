@@ -70,7 +70,7 @@ Backup with rsync:
     Rsync can be done when system is running, but writing something while rsync is running may corrupt the backup file.
     Best to do it using live boot media and rsyncing partitionA to partitionB.
 
-    Some directories should be excluded when rsyncing. Keep directory itself, just don't backup files inside.
+    Some directories should be excluded when rsyncing. Use --exclude={"./dir1/*","./dir2/*"} to keep directory itself and exclude files inside.
     /boot - no need with simple setups, it's better to boot-repair after backup recovery
     /proc - historical directory, contains info about running processes, it's recreated every time system starts, no need to backup
     /sys - same as proc, but created more recently
@@ -88,7 +88,7 @@ Backup with rsync:
     
     sudo rsync -aAXv --stats --progress / --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} /mnt/disk2
 
-    sudo rsync -axHAXh --info=progress2 --log-file=/var/log/rsync.log /media/$USER/Bookworm/ --exclude={"/boot/*","/proc/*","/sys/*","/dev/*","/mnt/*","/media/*","/run/*","/lost+found","/tmp/*","/var/cache/*","/var/tmp/*"} /media/$USER/System-Backups/Debian/Snapshot-YY.MM.DD -n;
+    sudo rsync -axHAXh --info=progress2 --log-file=/var/log/rsync.log --link-dest=/backups/system-backup-12.12.1999/ /media/$USER/Bookworm/ --exclude={"/boot/*","/proc/*","/sys/*","/dev/*","/mnt/*","/media/*","/run/*","/lost+found","/tmp/*","/var/cache/*","/var/tmp/*"} /media/$USER/System-Backups/Debian/Snapshot-YY.MM.DD -n;
       
       slash after source is important, keep it
       after dry-run, remove -n at the end of command to do real backup
@@ -104,6 +104,7 @@ Backup with rsync:
     --delete - delete extraneous files from destination dir
     --info=progress2 - information about transfer progress, speed, files sent and still left
     --log-file - logs difference between next snapshots
+    --link-dest - if there is a directory with same files (username, permission, dates, etc.) hardlink files in new backup to them and don't copy, almost an incremental backup
     -n - dry-run
 
 Steps after install
